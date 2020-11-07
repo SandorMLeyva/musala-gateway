@@ -7,7 +7,7 @@ const ipV4Format = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-
 
 export class Gateway {
   @prop({ required: true, unique: true })
-  public id!: string;
+  public serial: string;
 
   @prop()
   public name?: string;
@@ -20,7 +20,6 @@ export class Gateway {
     localField: "_id",
     foreignField: "gatewayId",
   })
-
   public peripherals?: Ref<Peripheral>[];
 }
 

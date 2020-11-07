@@ -12,8 +12,8 @@ export class Peripheral {
   @prop()
   public vendor?: string;
 
-  @prop()
-  public dateCreated: string;
+  @prop({ default: Date.now })
+  public dateCreated: Date;
 
   @prop({ default: PeripheralStatus.offline })
   public status?: PeripheralStatus;

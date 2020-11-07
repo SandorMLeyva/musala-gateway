@@ -1,22 +1,21 @@
 import { Router } from 'express';
-import  {PeripheralController}  from '../controllers';
-import {
-  PeripheralApiUrlCreate,
-  PeripheralApiUrlList,
-  PeripheralApiUrlDetail,
-  PeripheralApiUrlRemove,
-  PeripheralApiUrlUpdate
-} from '@gateway/api-interfaces';
+import { PeripheralController, GatewayController } from '../controllers';
+import * as ApiInterfaces from '@gateway/api-interfaces';
 
 const router = Router();
 
 // peripheral
-router.post(PeripheralApiUrlCreate, PeripheralController.create);
-router.get(PeripheralApiUrlList, PeripheralController.list);
-router.get(PeripheralApiUrlDetail, PeripheralController.detail);
-router.delete(PeripheralApiUrlRemove, PeripheralController.remove);
-router.put(PeripheralApiUrlUpdate, PeripheralController.update);
+router.post(ApiInterfaces.PeripheralApiUrlCreate, PeripheralController.create);
+router.get(ApiInterfaces.PeripheralApiUrlList, PeripheralController.list);
+router.get(ApiInterfaces.PeripheralApiUrlDetail, PeripheralController.detail);
+router.delete(ApiInterfaces.PeripheralApiUrlRemove, PeripheralController.remove);
+router.put(ApiInterfaces.PeripheralApiUrlUpdate, PeripheralController.update);
 
 // gateway
+router.post(ApiInterfaces.GatewayApiUrlCreate, GatewayController.create);
+router.get(ApiInterfaces.GatewayApiUrlList, GatewayController.list);
+router.get(ApiInterfaces.GatewayApiUrlDetail, GatewayController.detail);
+router.delete(ApiInterfaces.GatewayApiUrlRemove, GatewayController.remove);
+router.put(ApiInterfaces.GatewayApiUrlUpdate, GatewayController.update);
 
 export default router;
