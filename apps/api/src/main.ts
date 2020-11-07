@@ -2,6 +2,7 @@ import * as express from 'express';
 // import { Message } from '@gateway/api-interfaces';
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import routes from "./app/routes"
 
 // Config
 dotenv.config();
@@ -16,12 +17,10 @@ const app = express();
 
 // const greeting: Message = { message: 'Welcome to api!' };
 
-// app.get('/api', (req, res) => {
-//   res.send(greeting);
-// });
+app.use("/apiv1", routes);
 
 // Start server
 const server = app.listen(port, () => {
-  console.log('Listening at http://localhost:' + port + '/api');
+  console.log(`Listening at http://localhost:${port}/apiv1` );
 });
 server.on('error', console.error);
