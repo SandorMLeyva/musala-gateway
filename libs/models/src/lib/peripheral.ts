@@ -6,8 +6,8 @@ export enum PeripheralStatus {
 }
 
 export class Peripheral {
-  @prop({ required: true, unique: true })
-  public id: number;
+  @prop({ unique: true })
+  public uid: number;
 
   @prop()
   public vendor?: string;

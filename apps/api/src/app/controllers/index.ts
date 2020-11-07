@@ -1,3 +1,5 @@
-import {create} from "./peripheral";
+import  {create, list, detail, remove, update}  from "./peripheral";
 
-export default {create}
+export const PeripheralController = {
+    create, list, detail, remove, update
+};
