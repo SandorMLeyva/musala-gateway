@@ -1,5 +1,5 @@
 {
-  "npmScope": "gateway",
+  "npmScope": "musala-gateway",
   "affected": {
     "defaultBase": "master"
   },
