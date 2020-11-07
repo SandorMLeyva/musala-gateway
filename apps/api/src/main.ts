@@ -13,7 +13,13 @@ const mongoAddr: string = process.env.mongoAddr || 'mongodb://localhost';
 const db: string = process.env.db || 'gateway';
 
 // Setup app
-mongoose.connect(`${mongoAddr}/${db}`, { useNewUrlParser: true });
+mongoose.connect(`${mongoAddr}/${db}`, {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+});
+
 const app = express();
 
 // const greeting: Message = { message: 'Welcome to api!' };

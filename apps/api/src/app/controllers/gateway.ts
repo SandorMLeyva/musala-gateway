@@ -21,7 +21,7 @@ export async function list(req: Request, res: Response) {
 
 // get detail
 export async function detail(req: Request, res: Response) {
-  
+  // TODO: capturar los errores
   const item = await GatewayModel.findById(req.params.id).populate(
     'peripherals'
   );
@@ -30,6 +30,9 @@ export async function detail(req: Request, res: Response) {
 
 // put update
 export async function update(req: Request, res: Response) {
+  // const item:Gateway  = GatewayModel.findOneAndUpdate({ _id: req.params.id }, req.body);
+  // return res.json(item );
+
   GatewayModel.findOneAndUpdate({ _id: req.params.id }, req.body, function (
     err,
     item
@@ -37,6 +40,7 @@ export async function update(req: Request, res: Response) {
     if (err) res.status(500).send({ error: err.message });
     return res.json(item as Gateway);
   });
+
 }
 
 // delete delete

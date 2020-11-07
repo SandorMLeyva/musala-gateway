@@ -27,18 +27,25 @@ export async function detail(req: Request, res: Response) {
   });
 }
 
-// get update
+// put update
 export async function update(req: Request, res: Response) {
-  PeripheralModel.findOneAndUpdate({ _id: req.params.id }, req.body, function (
-    err,
-    item
-  ) {
-    if (err) res.status(500).send({ error: err.message });
-    return res.json(item as Peripheral);
-  });
+  if (req.body.gatewayId) {
+    const err = await PeripheralModel.checkAmount(req.body.gatewayId);
+    if (err) return res.status(400).send({ error: err.message });
+  }
+  PeripheralModel.findOneAndUpdate(
+    { _id: req.params.id },
+    req.body,
+    { runValidators: true },
+    function (err, item) {
+      if (err) res.status(500).send({ error: err.message });
+
+      return res.json(item as Peripheral);
+    }
+  );
 }
 
-// get delete
+// delete delete
 export async function remove(req: Request, res: Response) {
   await PeripheralModel.findByIdAndRemove(req.params.id, function (err, item) {
     if (err) return res.status(500).send({ error: err.message });
