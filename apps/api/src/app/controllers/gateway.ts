@@ -21,24 +21,25 @@ export async function list(req: Request, res: Response) {
 
 // get detail
 export async function detail(req: Request, res: Response) {
-  await GatewayModel.findById(req.params.id, function (err, item) {
-    if (err) return res.status(500).send({ error: err.message });
-    return res.json(item as Gateway);
-  });
+  
+  const item = await GatewayModel.findById(req.params.id).populate(
+    'peripherals'
+  );
+  return res.json({...item._doc, peripherals:item.peripherals} );
 }
 
-// get update
+// put update
 export async function update(req: Request, res: Response) {
   GatewayModel.findOneAndUpdate({ _id: req.params.id }, req.body, function (
     err,
     item
   ) {
     if (err) res.status(500).send({ error: err.message });
-    return res.send(item as Gateway);
+    return res.json(item as Gateway);
   });
 }
 
-// get delete
+// delete delete
 export async function remove(req: Request, res: Response) {
   await GatewayModel.findByIdAndRemove(req.params.id, function (err, item) {
     if (err) return res.status(500).send({ error: err.message });

@@ -1,4 +1,4 @@
-import { getModelForClass, Ref, prop } from "@typegoose/typegoose";
+import { getModelForClass, prop } from "@typegoose/typegoose";
 import { Peripheral } from "./peripheral";
 
 // from https://www.regexpal.com/96770
@@ -20,7 +20,8 @@ export class Gateway {
     localField: "_id",
     foreignField: "gatewayId",
   })
-  public peripherals?: Ref<Peripheral>[];
+  public peripherals?: Peripheral[];
+
 }
 
 export default getModelForClass(Gateway);

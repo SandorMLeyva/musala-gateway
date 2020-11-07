@@ -34,7 +34,7 @@ export async function update(req: Request, res: Response) {
     item
   ) {
     if (err) res.status(500).send({ error: err.message });
-    return res.send(item as Peripheral);
+    return res.json(item as Peripheral);
   });
 }
 
