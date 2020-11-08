@@ -1,5 +1,4 @@
 import * as express from 'express';
-// import { Message } from '@gateway/api-interfaces';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import routes from './app/routes';
@@ -22,12 +21,11 @@ mongoose.connect(`${mongoAddr}/${db}`, {
 
 const app = express();
 
-// const greeting: Message = { message: 'Welcome to api!' };
 app.use(json());
 app.use('/api/v1', routes);
 
 // Start server
 const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/apiv1`);
+  console.log(`Listening at http://localhost:${port}/api/v1/`);
 });
 server.on('error', console.error);
