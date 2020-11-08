@@ -17,5 +17,6 @@ router.get(ApiInterfaces.GatewayApiUrlList, GatewayController.list);
 router.get(ApiInterfaces.GatewayApiUrlDetail, GatewayController.detail);
 router.delete(ApiInterfaces.GatewayApiUrlRemove, GatewayController.remove);
 router.put(ApiInterfaces.GatewayApiUrlUpdate, GatewayController.update);
+router.get(ApiInterfaces.GatewayApiUrlPeripheral, GatewayController.getPeripherals);
 
 export default router;

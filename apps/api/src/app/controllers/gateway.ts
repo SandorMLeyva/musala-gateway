@@ -1,4 +1,4 @@
-import { GatewayModel, Gateway } from '@gateway/models';
+import { GatewayModel, Gateway, PeripheralModel, Peripheral } from '@gateway/models';
 import { Request, Response } from 'express';
 
 // post create
@@ -21,18 +21,12 @@ export async function list(req: Request, res: Response) {
 
 // get detail
 export async function detail(req: Request, res: Response) {
-  // TODO: capturar los errores
-  const item = await GatewayModel.findById(req.params.id).populate(
-    'peripherals'
-  );
-  return res.json({...item._doc, peripherals:item.peripherals} );
+  const item = await GatewayModel.findById(req.params.id);
+  return res.json(item);
 }
 
 // put update
 export async function update(req: Request, res: Response) {
-  // const item:Gateway  = GatewayModel.findOneAndUpdate({ _id: req.params.id }, req.body);
-  // return res.json(item );
-
   GatewayModel.findOneAndUpdate({ _id: req.params.id }, req.body, function (
     err,
     item
@@ -40,7 +34,6 @@ export async function update(req: Request, res: Response) {
     if (err) res.status(500).send({ error: err.message });
     return res.json(item as Gateway);
   });
-
 }
 
 // delete delete
@@ -49,4 +42,12 @@ export async function remove(req: Request, res: Response) {
     if (err) return res.status(500).send({ error: err.message });
     return res.json(item as Gateway);
   });
+}
+
+// get get peripherals from a given gateway
+export async function getPeripherals(req: Request, res: Response) {
+  const items: [Peripheral] = await PeripheralModel.find({
+    gatewayId: req.params.id,
+  }).exec();
+  return res.json(items);
 }

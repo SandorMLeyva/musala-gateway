@@ -10,7 +10,6 @@ export enum PeripheralStatus {
 }
 
 @pre<Peripheral>("validate", async function (next) {
-  console.log("fffffffffffffffffffffffffffffffffffffffffffffff");
   const err = await Peripheral.checkAmount(this.gatewayId);
   if (err) next(err);
   else next();
@@ -29,17 +28,15 @@ export class Peripheral {
   @prop({ default: PeripheralStatus.offline })
   public status?: PeripheralStatus;
 
-  @prop({ required: true })
+  @prop()
   public gatewayId: string;
 
   public static async checkAmount(gatewayId: string
   ) {
-    const model = getModelForClass(Peripheral);
-    const items: [Peripheral] = await model.find({
-      gatewayId: gatewayId,
-    }).exec();
+    const peripheralModel = getModelForClass(Peripheral);
+    const itemsCount: number = await peripheralModel.count({  gatewayId: gatewayId });
 
-    if (items.length >= 10)
+    if (itemsCount >= 10)
       return {
         name: 'Validation error ',
         message: 'Gateway already has its 10 devices',

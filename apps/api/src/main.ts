@@ -24,7 +24,7 @@ const app = express();
 
 // const greeting: Message = { message: 'Welcome to api!' };
 app.use(json());
-app.use('/apiv1', routes);
+app.use('/api/v1', routes);
 
 // Start server
 const server = app.listen(port, () => {
