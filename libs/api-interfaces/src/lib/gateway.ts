@@ -1,16 +1,7 @@
 
-const GatewayApiUrlCreate = '/gateway';
-const GatewayApiUrlList = '/gateway';
-const GatewayApiUrlRemove = '/gateway/:id';
-const GatewayApiUrlDetail = '/gateway/:id';
-const GatewayApiUrlUpdate = '/gateway/:id';
-const GatewayApiUrlPeripheral = '/gateway/:id/peripheral';
-
-export {
-  GatewayApiUrlCreate,
-  GatewayApiUrlUpdate,
-  GatewayApiUrlRemove,
-  GatewayApiUrlDetail,
-  GatewayApiUrlList,
-  GatewayApiUrlPeripheral,
-};
+export const GatewayApiUrlCreate = '/gateway';
+export const GatewayApiUrlList = '/gateway';
+export const GatewayApiUrlRemove = '/gateway/:id';
+export const GatewayApiUrlDetail = '/gateway/:id';
+export const GatewayApiUrlUpdate = '/gateway/:id';
+export const GatewayApiUrlPeripheral = '/gateway/:id/peripheral';
