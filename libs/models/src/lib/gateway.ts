@@ -18,6 +18,5 @@ export const GatewaySchema: mongoose.Schema = new mongoose.Schema({
   
 });
 
-const GatewayModel = mongoose.model<IGateway>('GatewayModel', GatewaySchema);
+export const GatewayModel = mongoose.model<IGateway>('GatewayModel', GatewaySchema);
 
-export default GatewayModel;

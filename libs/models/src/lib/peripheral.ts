@@ -34,8 +34,7 @@ export const PeripheralSchema: Schema = new Schema({
   },
 });
 
-const PeripheralModel = mongoose.model<IPeripheral>(
+export const PeripheralModel = mongoose.model<IPeripheral>(
   'PeripheralModel',
   PeripheralSchema
 );
-export default PeripheralModel;
