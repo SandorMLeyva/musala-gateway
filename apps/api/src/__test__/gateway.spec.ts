@@ -140,3 +140,92 @@ describe("Test gateway's CRUD", function () {
       .expect(200, done);
   });
 });
+
+describe("Test gateway's CRUD validations", function () {
+  it('Create a gateway', function (done) {
+    request(app)
+      .post('/api/v1/gateway')
+      .send({
+        "serial": "SM-TEST3-SERIAL",
+        "name": "Test-Server",
+        "ipv4Address": "192.168.1.2"
+      })
+      .expect(201, done);
+  });
+
+  it('Create a gateway with the same serial, expected 400', function (done) {
+    request(app)
+      .post('/api/v1/gateway')
+      .send({
+        "serial": "SM-TEST3-SERIAL",
+        "name": "Test-Server",
+        "ipv4Address": "192.168.1.2"
+      })
+      .expect(400, done);
+  });
+
+  it('Create a gateway with wrong IP', function (done) {
+    request(app)
+      .post('/api/v1/gateway')
+      .send({
+        "serial": "SM-TEST4-SERIAL",
+        "name": "Test-Server",
+        "ipv4Address": "192.168.1.500"
+      })
+      .expect(400, done);
+  });
+  it('Create a gateway with wrong IP 2', function (done) {
+    request(app)
+      .post('/api/v1/gateway')
+      .send({
+        "serial": "SM-TEST4-SERIAL",
+        "name": "Test-Server",
+        "ipv4Address": "200.01.4.1"
+      })
+      .expect(400, done);
+  });
+  it('Create a gateway with wrong IP 4', function (done) {
+    request(app)
+      .post('/api/v1/gateway')
+      .send({
+        "serial": "SM-TEST4-SERIAL",
+        "name": "Test-Server",
+        "ipv4Address": "1.1.404.1"
+      })
+      .expect(400, done);
+  });
+  it('Create a gateway with wrong IP 3', function (done) {
+    request(app)
+      .post('/api/v1/gateway')
+      .send({
+        "serial": "SM-TEST4-SERIAL",
+        "name": "Test-Server",
+        "ipv4Address": "non-ip"
+      })
+      .expect(400, done);
+  });
+
+  it('Try to get non-existent gateway, expected 404', function (done) {
+    request(app)
+      .get('/api/v1/gateway/2fa9610e0879a10360b23763')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(404, done);
+  });
+
+  it('Try to update non-existent gateway, expected 404', function (done) {
+    request(app)
+      .put('/api/v1/gateway/2fa9610e0879a10360b23763')
+      .expect(404, done);
+  });
+
+  it('Try to delete non-existent gateway, expected 404', function (done) {
+    request(app)
+      .delete('/api/v1/gateway/2fa9610e0879a10360b23763')
+      .expect(404, done);
+  });
+
+ 
+
+
+});
