@@ -1,16 +1,16 @@
-import { Peripheral } from '@gateway/models';
 
-const PeripheralApiUrlCreate = '/peripheral';
-const PeripheralApiUrlList = '/peripheral';
-const PeripheralApiUrlRemove = '/peripheral/:id';
-const PeripheralApiUrlDetail = '/peripheral/:id';
-const PeripheralApiUrlUpdate = '/peripheral/:id';
+export const PeripheralApiUrlCreate = '/peripheral';
+export const PeripheralApiUrlList = '/peripheral';
+export const PeripheralApiUrlRemove = '/peripheral/:id';
+export const PeripheralApiUrlDetail = '/peripheral/:id';
+export const PeripheralApiUrlUpdate = '/peripheral/:id';
+export const PeripheralApiUrlSetGateway = '/peripheral/:id/:gatewayId';
 
-export {
-  Peripheral,
-  PeripheralApiUrlCreate,
-  PeripheralApiUrlUpdate,
-  PeripheralApiUrlRemove,
-  PeripheralApiUrlDetail,
-  PeripheralApiUrlList,
-};
+// export {
+//   PeripheralApiUrlCreate,
+//   PeripheralApiUrlUpdate,
+//   PeripheralApiUrlRemove,
+//   PeripheralApiUrlDetail,
+//   PeripheralApiUrlList,
+//   PeripheralApiUrlSetGateway
+// };

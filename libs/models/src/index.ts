@@ -1,12 +1,9 @@
-import PeripheralModel, {Peripheral, PeripheralStatus} from './lib/peripheral';
-import GatewayModel, {Gateway} from './lib/gateway';
+export * from './lib/peripheral';
+export * from './lib/gateway';
+
+import PeripheralModel from './lib/peripheral';
+import GatewayModel from './lib/gateway';
 
 export {
-    Peripheral,
-    PeripheralModel,
-    PeripheralStatus,
-    Gateway,
-    GatewayModel
+    PeripheralModel, GatewayModel
 }
-
-

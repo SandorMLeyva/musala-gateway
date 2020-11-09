@@ -1,47 +1,41 @@
-import {
-  getModelForClass,
-  prop,
-  pre,
-} from '@typegoose/typegoose';
+import * as mongoose from 'mongoose';
+import { Document, Schema } from 'mongoose';
 
 export enum PeripheralStatus {
   offline,
   online,
 }
 
-@pre<Peripheral>("validate", async function (next) {
-  const err = await Peripheral.checkAmount(this.gatewayId);
-  if (err) next(err);
-  else next();
-})
-
-export class Peripheral {
-  @prop({ unique: true })
-  public uid: number;
-
-  @prop()
-  public vendor?: string;
-
-  @prop({ default: Date.now })
-  public dateCreated: Date;
-
-  @prop({ default: PeripheralStatus.offline })
-  public status?: PeripheralStatus;
-
-  @prop()
-  public gatewayId: string;
-
-  public static async checkAmount(gatewayId: string
-  ) {
-    const peripheralModel = getModelForClass(Peripheral);
-    const itemsCount: number = await peripheralModel.count({  gatewayId: gatewayId });
-
-    if (itemsCount >= 10)
-      return {
-        name: 'Validation error ',
-        message: 'Gateway already has its 10 devices',
-      };
-  }
+export interface IPeripheral extends Document {
+  uid: number;
+  vendor: string;
+  dateCreated?: Date;
+  status?: PeripheralStatus;
+  gateway?: string;
 }
 
-export default getModelForClass(Peripheral);
+export const PeripheralSchema: Schema = new Schema({
+  uid: { type: Number, required: true },
+  vendor: String,
+  dateCreated: { type: Date, default: Date.now },
+  status: { type: Number, required: true, default: PeripheralStatus.offline },
+  gateway: {
+    type: Schema.Types.ObjectId,
+    ref: 'GatewayModel',
+    validate: {
+      validator: async (value) => {
+        const itemsCount: number = await PeripheralModel.countDocuments({
+          gateway: value,
+        });
+        return itemsCount < 10;
+      },
+      message: 'Gateway already has its 10 devices',
+    },
+  },
+});
+
+const PeripheralModel = mongoose.model<IPeripheral>(
+  'PeripheralModel',
+  PeripheralSchema
+);
+export default PeripheralModel;

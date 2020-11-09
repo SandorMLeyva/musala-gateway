@@ -1,4 +1,3 @@
-import { Gateway } from '@gateway/models';
 
 const GatewayApiUrlCreate = '/gateway';
 const GatewayApiUrlList = '/gateway';
@@ -8,7 +7,6 @@ const GatewayApiUrlUpdate = '/gateway/:id';
 const GatewayApiUrlPeripheral = '/gateway/:id/peripheral';
 
 export {
-  Gateway,
   GatewayApiUrlCreate,
   GatewayApiUrlUpdate,
   GatewayApiUrlRemove,
