@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
-import { Button, LinearProgress, Typography, createStyles, makeStyles, Theme, Switch, FormControlLabel } from '@material-ui/core';
+import { Button, LinearProgress, Typography, Box, Switch, FormControlLabel } from '@material-ui/core';
 import { IPeripheral } from '@gateway/models';
 import * as ApiInterfaces from '@gateway/api-interfaces';
 
@@ -12,18 +12,10 @@ interface FormPeripheralProps {
     onCancel?(): void
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            padding: 40
-        }
-    }),
-);
 
 export default function FormPeripheral(props: FormPeripheralProps) {
-    const classes = useStyles();
     return (
-        <div className={classes.root}>
+        <Box p={40}>
             <Typography variant="h5" component="h2">
                 Add new Peripheral
                     </Typography>
@@ -101,11 +93,12 @@ export default function FormPeripheral(props: FormPeripheralProps) {
                                         type="checkbox"
                                         label="Status"
                                         name="status"
+                                        color="primary"
                                         defaultChecked
                                         onChange={event => setValues({ ...values, status: event.target.checked })}
                                     />
                                 }
-                                label="Primary"
+                                label="Status"
                             />
 
 
@@ -121,6 +114,6 @@ export default function FormPeripheral(props: FormPeripheralProps) {
                     )}
                 </Formik >
             </div>
-        </div>
+        </Box>
     );
 }
