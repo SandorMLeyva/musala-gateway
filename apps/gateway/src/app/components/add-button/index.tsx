@@ -7,32 +7,37 @@ import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles({
     root: {
-        minWidth: 250,
-        maxWidth: 250,
-        minHeight: 220,
+        width: 250,
+        height: 140,
     },
-    hugeIcon:{
-      fontSize: 100
+    root2: {
+        width: 250,
+        height: 220,
     },
-    center:{
+    hugeIcon: {
+        fontSize: 100
+    },
+    center: {
+        textAlign: "center"
+    },
+    center2: {
         textAlign: "center",
         marginTop: "10%"
     }
 });
 
 interface AddCardProps {
-    onClick(): void
+    onClick(): void;
+    small?: boolean
 }
 
-export default function AddCard(props:AddCardProps) {
+export default function AddCard(props: AddCardProps) {
     const classes = useStyles();
-
-  
 
     return (
         <Box m={1}>
-            <Card className={classes.root}>
-                <CardContent className={classes.center}>
+            <Card className={props.small ? classes.root : classes.root2}>
+                <CardContent className={props.small ? classes.center : classes.center2}>
                     <IconButton aria-label="add" onClick={props.onClick} >
                         <AddIcon className={classes.hugeIcon} />
                     </IconButton>
@@ -40,6 +45,6 @@ export default function AddCard(props:AddCardProps) {
 
             </Card>
         </Box>
-        
+
     );
 }

@@ -4,13 +4,12 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { Box, Tooltip } from '@material-ui/core';
-import { IPeripheral, PeripheralStatus } from '@gateway/models';
+import { IPeripheral } from '@gateway/models';
 
 const useStyles = makeStyles({
     root: {
-        minWidth: 250,
-        maxWidth: 250,
-        minHeight: 140,
+        width: 250,
+        height: 140,
     },
     title: {
         fontSize: 14,
@@ -38,15 +37,15 @@ const useStyles = makeStyles({
 
 export function PeripheralCard(params: { peripheral: IPeripheral }) {
     const classes = useStyles();
-    const isOnline = params.peripheral.status === PeripheralStatus.online;
-    const status = isOnline ? <div className={classes.online}></div> : <div className={classes.offline}></div>;
+    
+    const status = params.peripheral.status ? <div className={classes.online}></div> : <div className={classes.offline}></div>;
 
     return (
         <Box m={1}>
             <Card className={classes.root}>
                 <CardContent >
                     <div className={classes.right}>
-                        <Tooltip title={isOnline?"Online":"Offline"} placement="top-start">
+                        <Tooltip title={params.peripheral.status?"Online":"Offline"} placement="top-start">
                             {status}
                         </Tooltip>
                     </div>

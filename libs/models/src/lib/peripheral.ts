@@ -1,17 +1,13 @@
 import * as mongoose from 'mongoose';
 import { Document, Schema } from 'mongoose';
 
-export enum PeripheralStatus {
-  offline,
-  online,
-}
 
 export interface IPeripheral {
   _id?: any;
   uid: number;
   vendor: string;
   dateCreated?: Date;
-  status?: PeripheralStatus;
+  status?: boolean;
   gateway?: string;
 }
 
@@ -19,7 +15,7 @@ export const PeripheralSchema: Schema = new Schema({
   uid: { type: Number, required: true },
   vendor: String,
   dateCreated: { type: Date, default: Date.now },
-  status: { type: Number, required: true, default: PeripheralStatus.offline },
+  status: { type: Number, required: true, default: false },
   gateway: {
     type: Schema.Types.ObjectId,
     ref: 'GatewayModel',

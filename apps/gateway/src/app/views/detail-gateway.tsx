@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router';
-import { Typography, makeStyles, Box } from '@material-ui/core';
+import { Typography, makeStyles, Box, Modal, Fade, Paper, IconButton } from '@material-ui/core';
 import { IGateway, IPeripheral } from '@gateway/models';
 import * as ApiInterfaces from '@gateway/api-interfaces';
 import { PeripheralCard } from '../components/peripheral/peripheral-card';
+import AddCard from '../components/add-button';
+import FormPeripheral from '../components/peripheral/form';
+import Backdrop from '@material-ui/core/Backdrop';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 
 type GatewayDetailParams = {
@@ -23,6 +28,18 @@ const useStyles = makeStyles({
     link: {
         textDecoration: "none"
     },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    paper: {
+        width: "30vw",
+        textAlign: "center"
+    },
+    textRigth: {
+        textAlign: "right"
+    }
 
 });
 
@@ -45,6 +62,22 @@ const GatewayDetail: React.FC<GatewayDetailProps> = ({ match }) => {
             .catch(e => console.log(e))
     }, []);
 
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const newGateway = (peripheral: IPeripheral) => {
+        setPeripherals([...peripherals, peripheral]);
+        handleClose();
+    };
+
+
     return (<div>
         <Box p={1} m={2}>
             <Typography variant="h5" component="h3">
@@ -59,11 +92,38 @@ const GatewayDetail: React.FC<GatewayDetailProps> = ({ match }) => {
         </Box>
         <Box p={5}>
             <Box ml={1}>
-            <Typography variant="h5" component="h2">
-                Devices
+                <Typography variant="h5" component="h2">
+                    Devices
                 </Typography>
             </Box>
-            {peripherals.map(peripheral => <PeripheralCard peripheral={peripheral} />)}
+
+            <Box display="flex" flexWrap={"wrap"} >
+                <AddCard small={true} onClick={handleOpen} />
+                {peripherals.map(peripheral => <PeripheralCard peripheral={peripheral} key={peripheral._id} />)}
+            </Box>
+            <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                className={classes.modal}
+                open={open}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 500,
+                }}
+            >
+                <Fade in={open}>
+                    <Paper className={classes.paper}>
+                        <div className={classes.textRigth}>
+                            <IconButton onClick={handleClose} aria-label="delete" >
+                                <CloseIcon />
+                            </IconButton>
+                        </div>
+                        <FormPeripheral gateway={match.params.id} onSubmit={newGateway} />
+                    </Paper>
+                </Fade>
+            </Modal>
         </Box>
     </div>);
 };
