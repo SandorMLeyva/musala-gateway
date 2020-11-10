@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { GatewayCard } from '../components/gateway'
-import { Box, Modal, Theme, createStyles, makeStyles, Fade, Paper, TextField } from '@material-ui/core'
+import { Box, Modal, Theme, createStyles, makeStyles, Fade, Paper } from '@material-ui/core'
 import AddCard from '../components/add-button'
 import { IGateway } from "@gateway/models"
 import * as ApiInterfaces from '@gateway/api-interfaces';
 import Backdrop from '@material-ui/core/Backdrop';
-
-import { Formik, Form, Field } from 'formik';
-import { Button, LinearProgress } from '@material-ui/core';
+import FormGateway from '../components/gateway/form';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -19,15 +17,13 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         paper:{
             height: "70vh",
-            width: "30vw"
-        }
+            width: "30vw",
+            textAlign: "center"
+        },
 
     }),
 );
-interface Values {
-    email: string;
-    password: string;
-}
+
 export const Gateways = () => {
     const classes = useStyles();
     const [gateways, setGateways] = useState<IGateway[]>([]);
@@ -70,57 +66,7 @@ export const Gateways = () => {
             >
                 <Fade in={open}>
                     <Paper className={classes.paper}>
-                        <Formik
-                            initialValues={{
-                                email: '',
-                                password: '',
-                            }}
-                            validate={values => {
-                                const errors: Partial<Values> = {};
-                                if (!values.email) {
-                                    errors.email = 'Required';
-                                } else if (
-                                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-                                ) {
-                                    errors.email = 'Invalid email address';
-                                }
-                                return errors;
-                            }}
-                            onSubmit={(values, { setSubmitting }) => {
-                                setTimeout(() => {
-                                    setSubmitting(false);
-                                    alert(JSON.stringify(values, null, 2));
-                                }, 500);
-                            }}
-                        >
-                            {({ submitForm, isSubmitting }) => (
-                                <Form>
-                                    <Field
-                                        component={TextField}
-                                        name="email"
-                                        type="email"
-                                        label="Email"
-                                    />
-                                    <br />
-                                    <Field
-                                        component={TextField}
-                                        type="password"
-                                        label="Password"
-                                        name="password"
-                                    />
-                                    {isSubmitting && <LinearProgress />}
-                                    <br />
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        disabled={isSubmitting}
-                                        onClick={submitForm}
-                                    >
-                                        Submit
-          </Button>
-                                </Form>
-                            )}
-                        </Formik>
+                        <FormGateway/>
                     </Paper>
                 </Fade>
             </Modal>
