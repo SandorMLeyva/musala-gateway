@@ -23,7 +23,8 @@ const useStyles = makeStyles({
     center2: {
         textAlign: "center",
         marginTop: "10%"
-    }
+    },
+    
 });
 
 interface AddCardProps {
@@ -35,7 +36,7 @@ export default function AddCard(props: AddCardProps) {
     const classes = useStyles();
 
     return (
-        <Box m={1}>
+        <Box m={1} >
             <Card className={props.small ? classes.root : classes.root2}>
                 <CardContent className={props.small ? classes.center : classes.center2}>
                     <IconButton aria-label="add" onClick={props.onClick} >

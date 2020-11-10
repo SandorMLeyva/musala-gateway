@@ -98,7 +98,7 @@ const GatewayDetail: React.FC<GatewayDetailProps> = ({ match }) => {
             </Box>
 
             <Box display="flex" flexWrap={"wrap"} >
-                <AddCard small={true} onClick={handleOpen} />
+                {peripherals.length < 10 ? <AddCard small={true} onClick={handleOpen} /> : null}
                 {peripherals.map(peripheral => <PeripheralCard peripheral={peripheral} key={peripheral._id} />)}
             </Box>
             <Modal
