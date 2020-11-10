@@ -31,6 +31,7 @@
     "@material-ui/icons": "^4.9.1",
     "@typegoose/typegoose": "^7.4.1",
     "@types/mongoose": "^5.7.37",
+    "@types/react-router-dom": "^5.1.6",
     "@types/supertest": "^2.0.10",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -42,6 +43,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-is": "16.13.1",
+    "react-router-dom": "^5.2.0",
     "styled-components": "5.1.1"
   },
   "devDependencies": {

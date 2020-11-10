@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Box } from '@material-ui/core';
 import { IGateway } from '@gateway/models';
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
     root: {
@@ -20,15 +21,21 @@ const useStyles = makeStyles({
     pos: {
         marginBottom: 12,
     },
+    link: {
+        textDecoration: "none"
+    },
+    cardContent:{
+        height: 140
+    }
 });
 
-export function GatewayCard(params :{gateway: IGateway}) {
+export function GatewayCard(params: { gateway: IGateway }) {
     const classes = useStyles();
 
     return (
         <Box m={1}>
             <Card className={classes.root}>
-                <CardContent>
+                <CardContent className={classes.cardContent}>
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
                         {params.gateway.ipv4Address}
                     </Typography>
@@ -41,7 +48,9 @@ export function GatewayCard(params :{gateway: IGateway}) {
 
                 </CardContent>
                 <CardActions>
-                    <Button size="small">Details</Button>
+                    <Link className={classes.link} to={`/gateway/${params.gateway._id}`}>
+                        <Button size="small">Details</Button>
+                    </Link>
                 </CardActions>
             </Card>
         </Box>
