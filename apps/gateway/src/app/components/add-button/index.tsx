@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     root: {
         minWidth: 250,
         maxWidth: 250,
-        minHeight: 200,
+        minHeight: 220,
     },
     hugeIcon:{
       fontSize: 100

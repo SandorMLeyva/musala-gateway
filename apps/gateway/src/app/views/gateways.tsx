@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { GatewayCard } from '../components/gateway'
-import { Box, Modal, Theme, createStyles, makeStyles, Fade, Paper } from '@material-ui/core'
+import { Box, Modal, Theme, createStyles, makeStyles, Fade, Paper, IconButton } from '@material-ui/core'
 import AddCard from '../components/add-button'
 import { IGateway } from "@gateway/models"
 import * as ApiInterfaces from '@gateway/api-interfaces';
 import Backdrop from '@material-ui/core/Backdrop';
 import FormGateway from '../components/gateway/form';
-
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -15,11 +15,13 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center',
             justifyContent: 'center',
         },
-        paper:{
-            height: "70vh",
+        paper: {
             width: "30vw",
             textAlign: "center"
         },
+        textRigth: {
+            textAlign: "right"
+        }
 
     }),
 );
@@ -44,6 +46,11 @@ export const Gateways = () => {
         setOpen(false);
     };
 
+    const newGateway = (gateway: IGateway) => {
+        setGateways([...gateways, gateway]);
+        handleClose();
+    };
+
 
     return (
         <div>
@@ -66,7 +73,12 @@ export const Gateways = () => {
             >
                 <Fade in={open}>
                     <Paper className={classes.paper}>
-                        <FormGateway/>
+                        <div className={classes.textRigth}>
+                            <IconButton onClick={handleClose} aria-label="delete" >
+                                <CloseIcon />
+                            </IconButton>
+                        </div>
+                        <FormGateway onSubmit={newGateway} />
                     </Paper>
                 </Fade>
             </Modal>
