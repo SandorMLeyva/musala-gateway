@@ -5,6 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { Box, Tooltip } from '@material-ui/core';
 import { IPeripheral } from '@gateway/models';
+import moment from 'moment';
 
 const useStyles = makeStyles({
     root: {
@@ -50,11 +51,11 @@ export function PeripheralCard(params: { peripheral: IPeripheral }) {
                         </Tooltip>
                     </div>
                     <Box m={1}>
-                        <Typography className={classes.title} color="textSecondary" gutterBottom>
-                            {params.peripheral.dateCreated}
-                        </Typography>
                         <Typography variant="h5" component="h2">
                             {params.peripheral.vendor}
+                        </Typography>
+                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            {moment(params.peripheral.dateCreated).format('MMM Do YY, h:mm:ss a')} 
                         </Typography>
                         <Typography className={classes.pos} color="textSecondary">
                             {params.peripheral.uid}

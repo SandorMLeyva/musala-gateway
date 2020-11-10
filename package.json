@@ -39,6 +39,7 @@
     "express": "4.17.1",
     "formik": "^2.2.3",
     "formik-material-ui": "^3.0.0",
+    "moment": "^2.29.1",
     "mongoose": "^5.10.12",
     "react": "16.13.1",
     "react-dom": "16.13.1",
