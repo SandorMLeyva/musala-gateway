@@ -6,7 +6,8 @@ export enum PeripheralStatus {
   online,
 }
 
-export interface IPeripheral extends Document {
+export interface IPeripheral {
+  _id?: any;
   uid: number;
   vendor: string;
   dateCreated?: Date;
@@ -34,7 +35,7 @@ export const PeripheralSchema: Schema = new Schema({
   },
 });
 
-export const PeripheralModel = mongoose.model<IPeripheral>(
+export const PeripheralModel = mongoose.model<IPeripheral & Document>(
   'PeripheralModel',
   PeripheralSchema
 );
