@@ -1,7 +1,6 @@
 import app from '../app';
 import * as mongoose from 'mongoose';
 import * as request from 'supertest';
-import { PeripheralStatus } from '@gateway/models';
 
 let testServer;
 beforeAll(() => {
@@ -30,7 +29,7 @@ describe("Test peripheral's CRUD", function () {
       .send({
         uid: 1,
         vendor: 'Musala',
-        status: PeripheralStatus.offline,
+        status: false,
       })
       .expect((result) => {
         if (result.body.uid !== 1) {
@@ -39,8 +38,8 @@ describe("Test peripheral's CRUD", function () {
         if (result.body.vendor !== 'Musala') {
           throw new Error(`Expected Musala Response ${result.body.vendor}`);
         }
-        if (result.body.status !== PeripheralStatus.offline) {
-          throw new Error(`Expected 0 Response ${result.body.status}`);
+        if (result.body.status) {
+          throw new Error(`Expected false Response ${result.body.status}`);
         }
       })
       .expect(201, done);
@@ -53,7 +52,7 @@ describe("Test peripheral's CRUD", function () {
         _id: '1fa9610e0879a10360b23764',
         uid: 2,
         vendor: 'Musala',
-        status: PeripheralStatus.offline,
+        status: false,
       })
       .expect((result) => {
         if (result.body.uid !== 2) {
@@ -62,8 +61,8 @@ describe("Test peripheral's CRUD", function () {
         if (result.body.vendor !== 'Musala') {
           throw new Error(`Expected Musala Response ${result.body.vendor}`);
         }
-        if (result.body.status !== PeripheralStatus.offline) {
-          throw new Error(`Expected 0 Response ${result.body.status}`);
+        if (result.body.status) {
+          throw new Error(`Expected false Response ${result.body.status}`);
         }
         if (result.body._id !== '1fa9610e0879a10360b23764') {
           throw new Error(
@@ -106,7 +105,7 @@ describe("Test peripheral's CRUD", function () {
       .send({
         uid: 2,
         vendor: 'Musala-Update',
-        status: PeripheralStatus.online,
+        status: true,
       })
       .expect('Content-Type', /json/)
       .expect((result) => {
@@ -118,7 +117,7 @@ describe("Test peripheral's CRUD", function () {
             `Expected Musala-Update Response ${result.body.vendor}`
           );
         }
-        if (result.body.status !== PeripheralStatus.online) {
+        if (!result.body.status) {
           throw new Error(`Expected 1 Response ${result.body.status}`);
         }
         if (result.body._id !== '1fa9610e0879a10360b23764') {
