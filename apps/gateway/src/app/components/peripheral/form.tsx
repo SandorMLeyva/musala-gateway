@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
-import { Button, LinearProgress, Typography, Box, Switch, FormControlLabel, makeStyles, Theme, createStyles } from '@material-ui/core';
+import { Button, LinearProgress, Typography, Switch, FormControlLabel, makeStyles, Theme, createStyles } from '@material-ui/core';
 import { IPeripheral } from '@gateway/models';
 import * as ApiInterfaces from '@gateway/api-interfaces';
 
 
 interface FormPeripheralProps {
-    onSubmit?(item: IPeripheral): void,
+    onSubmit?(item: IPeripheral): void;
     gateway?: string;
-    onCancel?(): void
+    onCancel?(): void;
+    peripheral?: IPeripheral;
+    edit?: boolean;
 }
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -29,10 +31,10 @@ export default function FormPeripheral(props: FormPeripheralProps) {
                     </Typography>
             <div>
                 <Formik
-                    initialValues={{
-                        uid: 0,
-                        vendor: "",
-                        status: true,
+                    initialValues={ {
+                        uid:props.edit ? props.peripheral.uid: 0,
+                        vendor:props.edit ? props.peripheral.vendor: "",
+                        status: props.edit ? props.peripheral.status:true,
                     }}
                     validate={values => {
                         const errors: Partial<IPeripheral> = {};
@@ -43,23 +45,44 @@ export default function FormPeripheral(props: FormPeripheralProps) {
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         console.log(values);
-                        fetch(`http://localhost:3333/api/v1${ApiInterfaces.PeripheralApiUrlCreate}`,
-                            {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    uid: values.uid,
-                                    vendor: values.vendor,
-                                    status: values.status,
-                                    gateway: props.gateway
-                                }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                            .then(r => r.json())
-                            .then(r => props.onSubmit(r as IPeripheral))
-                            .then(r => setSubmitting(false))
-                            .catch(e => console.log(e));
+                        if (props.edit) {
+                            
+                            fetch(`http://localhost:3333/api/v1${ApiInterfaces.PeripheralApiUrlUpdate.replace(":id",props.peripheral._id)}`,
+                                {
+                                    method: 'PUT',
+                                    body: JSON.stringify({
+                                        uid: values.uid,
+                                        vendor: values.vendor,
+                                        status: values.status
+                                    }),
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
+                                .then(r => r.json())
+                                .then(r => props.onSubmit(r as IPeripheral))
+                                .then(r => setSubmitting(false))
+                                .catch(e => console.log(e));
+                        } else {
+
+                            fetch(`http://localhost:3333/api/v1${ApiInterfaces.PeripheralApiUrlCreate}`,
+                                {
+                                    method: 'POST',
+                                    body: JSON.stringify({
+                                        uid: values.uid,
+                                        vendor: values.vendor,
+                                        status: values.status,
+                                        gateway: props.gateway
+                                    }),
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
+                                .then(r => r.json())
+                                .then(r => props.onSubmit(r as IPeripheral))
+                                .then(r => setSubmitting(false))
+                                .catch(e => console.log(e));
+                        }
 
                     }
                     }
@@ -102,7 +125,7 @@ export default function FormPeripheral(props: FormPeripheralProps) {
                                         label="Status"
                                         name="status"
                                         color="primary"
-                                        defaultChecked
+                                        checked={values.status}
                                         onChange={event => setValues({ ...values, status: event.target.checked })}
                                     />
                                 }

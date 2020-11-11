@@ -39,8 +39,12 @@ const useStyles = makeStyles({
 
 interface ParamTypes {
     id: string
-  }
-const GatewayDetail= () => {
+}
+interface ISetUpdate {
+    edit: boolean,
+    peripheral: IPeripheral
+}
+const GatewayDetail = () => {
     const classes = useStyles();
     const { id } = useParams<ParamTypes>();
 
@@ -52,7 +56,7 @@ const GatewayDetail= () => {
             .catch(e => console.log(e))
     }, []);
 
-    const {peripherals, setPeripherals} = useContext(PeripheralContext);
+    const { peripherals, setPeripherals } = useContext(PeripheralContext);
 
     useEffect(() => {
         fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlPeripheral.replace(":id", id)}`)
@@ -61,7 +65,11 @@ const GatewayDetail= () => {
             .catch(e => console.log(e))
     }, []);
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [edit, setEdit] = useState<ISetUpdate>({
+        edit: false,
+        peripheral: null
+    });
 
     const handleOpen = () => {
         setOpen(true);
@@ -71,11 +79,49 @@ const GatewayDetail= () => {
         setOpen(false);
     };
 
-    const newGateway = (peripheral: IPeripheral) => {
+    const newPeripheral = (peripheral: IPeripheral) => {
+        setEdit({
+            edit: false,
+            peripheral: null
+        })
         setPeripherals([...peripherals, peripheral]);
         handleClose();
     };
 
+    const updatedPeripheral = (peripheral: IPeripheral) => {
+
+        const index = peripherals.findIndex(item => item._id === peripheral._id);
+
+        if (index !== -1) {
+            peripherals[index] = peripheral;
+        }
+        setPeripherals(peripherals);
+        handleClose();
+    };
+
+    const deletePeripheral = (item: IPeripheral) => (
+        fetch(`http://localhost:3333/api/v1${ApiInterfaces.PeripheralApiUrlRemove.replace(":id", item._id)}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(r => r.json())
+            .then(r => {
+                const clean = peripherals.filter(item => item._id !== r._id);
+                setPeripherals(clean);
+            })
+            .catch(e => console.log(e))
+    );
+
+    const editPeripheral = (item: IPeripheral) => {
+        setEdit({
+            edit: true,
+            peripheral: item
+        })
+        handleOpen()
+    };
 
     return (<div>
         <Box p={1} m={2}>
@@ -98,7 +144,7 @@ const GatewayDetail= () => {
 
             <Box display="flex" flexWrap={"wrap"} >
                 {peripherals.length < 10 ? <AddCard small={true} onClick={handleOpen} /> : null}
-                {peripherals.map(peripheral => <PeripheralCard peripheral={peripheral} key={peripheral._id} />)}
+                {peripherals.map(peripheral => <PeripheralCard onDelete={deletePeripheral} onEdit={editPeripheral} peripheral={peripheral} key={peripheral._id} />)}
             </Box>
             <Modal
                 aria-labelledby="transition-modal-title"
@@ -119,7 +165,7 @@ const GatewayDetail= () => {
                                 <CloseIcon />
                             </IconButton>
                         </div>
-                        <FormPeripheral gateway={id} onSubmit={newGateway} />
+                        <FormPeripheral {...edit} gateway={id} onSubmit={edit.edit ? updatedPeripheral : newPeripheral} />
                     </Paper>
                 </Fade>
             </Modal>
