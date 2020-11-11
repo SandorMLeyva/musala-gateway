@@ -1,4 +1,4 @@
-import React, { Children } from 'react'
+import React from 'react'
 import { Modal, Theme, createStyles, makeStyles, Fade, Paper, IconButton } from '@material-ui/core'
 import Backdrop from '@material-ui/core/Backdrop';
 import CloseIcon from '@material-ui/icons/Close';
@@ -29,10 +29,7 @@ interface IModalFormProps{
 
 export const ModalForm = (props:IModalFormProps) => {
     const classes = useStyles();
-
-
     return (
-
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
@@ -53,7 +50,6 @@ export const ModalForm = (props:IModalFormProps) => {
                         </IconButton>
                     </div>
                     {props.children}
-                    {/* <FormGateway onSubmit={props.newGateway} /> */}
                 </Paper>
             </Fade>
         </Modal>
