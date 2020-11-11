@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { RouteComponentProps } from 'react-router';
 import { Typography, makeStyles, Box, Modal, Fade, Paper, IconButton } from '@material-ui/core';
 import { IGateway, IPeripheral } from '@gateway/models';
 import * as ApiInterfaces from '@gateway/api-interfaces';
-import { PeripheralCard } from '../components/peripheral/peripheral-card';
+import { PeripheralCard } from '../components/peripheral/peripheralCard';
 import AddCard from '../components/add-button';
 import FormPeripheral from '../components/peripheral/form';
 import Backdrop from '@material-ui/core/Backdrop';
 import CloseIcon from '@material-ui/icons/Close';
+import { PeripheralContext } from '../context';
 
 
 
@@ -54,7 +55,9 @@ const GatewayDetail: React.FC<GatewayDetailProps> = ({ match }) => {
             .catch(e => console.log(e))
     }, []);
 
-    const [peripherals, setPeripherals] = useState<IPeripheral[]>([]);
+    // const [peripherals, setPeripherals] = useState<IPeripheral[]>([]);
+    const {peripherals, setPeripherals} = useContext(PeripheralContext);
+
     useEffect(() => {
         fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlPeripheral.replace(":id", match.params.id)}`)
             .then(r => r.json())

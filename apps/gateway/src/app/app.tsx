@@ -6,7 +6,8 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import GatewayDetail from './views/detail-gateway';
+import GatewayDetail from './views/detailGateway';
+import { PeripheralContextProvider } from './context';
 
 
 function App() {
@@ -14,12 +15,14 @@ function App() {
 
     <Layout children={
       <BrowserRouter>
-        <Switch>
-          <Route path="/gateway/:id" component={GatewayDetail}/>          
-          <Route path="/">
-            <Gateways />
-          </Route>
-        </Switch>
+        <PeripheralContextProvider>
+          <Switch>
+            <Route path="/gateway/:id" component={GatewayDetail} />
+            <Route path="/">
+              <Gateways />
+            </Route>
+          </Switch>
+        </PeripheralContextProvider>
       </BrowserRouter>
     }></Layout>
 
