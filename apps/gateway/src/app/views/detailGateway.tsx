@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { RouteComponentProps } from 'react-router';
 import { Typography, makeStyles, Box, Modal, Fade, Paper, IconButton } from '@material-ui/core';
 import { IGateway, IPeripheral } from '@gateway/models';
 import * as ApiInterfaces from '@gateway/api-interfaces';
@@ -9,13 +8,7 @@ import FormPeripheral from '../components/peripheral/form';
 import Backdrop from '@material-ui/core/Backdrop';
 import CloseIcon from '@material-ui/icons/Close';
 import { PeripheralContext } from '../context';
-
-
-
-type GatewayDetailParams = {
-    id: string;
-};
-type GatewayDetailProps = RouteComponentProps<GatewayDetailParams>;
+import { useParams } from 'react-router-dom';
 
 
 const useStyles = makeStyles({
@@ -44,22 +37,25 @@ const useStyles = makeStyles({
 
 });
 
-const GatewayDetail: React.FC<GatewayDetailProps> = ({ match }) => {
+interface ParamTypes {
+    id: string
+  }
+const GatewayDetail= () => {
     const classes = useStyles();
+    const { id } = useParams<ParamTypes>();
 
     const [gateway, setGateway] = useState<IGateway>({} as IGateway);
     useEffect(() => {
-        fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlDetail.replace(":id", match.params.id)}`)
+        fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlDetail.replace(":id", id)}`)
             .then(r => r.json())
             .then(setGateway)
             .catch(e => console.log(e))
     }, []);
 
-    // const [peripherals, setPeripherals] = useState<IPeripheral[]>([]);
     const {peripherals, setPeripherals} = useContext(PeripheralContext);
 
     useEffect(() => {
-        fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlPeripheral.replace(":id", match.params.id)}`)
+        fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlPeripheral.replace(":id", id)}`)
             .then(r => r.json())
             .then(setPeripherals)
             .catch(e => console.log(e))
@@ -123,7 +119,7 @@ const GatewayDetail: React.FC<GatewayDetailProps> = ({ match }) => {
                                 <CloseIcon />
                             </IconButton>
                         </div>
-                        <FormPeripheral gateway={match.params.id} onSubmit={newGateway} />
+                        <FormPeripheral gateway={id} onSubmit={newGateway} />
                     </Paper>
                 </Fade>
             </Modal>

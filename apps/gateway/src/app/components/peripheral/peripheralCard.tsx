@@ -81,10 +81,7 @@ export function PeripheralCard(params: { peripheral: IPeripheral }) {
                             })
                             .then(r => r.json())
                             .then(r=> {
-                                console.log(r);
-                                console.log(peripherals);
                                 const clean = peripherals.filter(item=>item._id !== r._id);
-                                console.log(clean);
                                 setPeripherals(clean);
                             })
                             .catch(e => console.log(e))

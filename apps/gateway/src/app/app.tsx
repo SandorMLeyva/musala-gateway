@@ -13,18 +13,20 @@ import { PeripheralContextProvider } from './context';
 function App() {
   return (
 
-    <Layout children={
+    <Layout>
       <BrowserRouter>
-        <PeripheralContextProvider>
-          <Switch>
-            <Route path="/gateway/:id" component={GatewayDetail} />
-            <Route path="/">
-              <Gateways />
-            </Route>
-          </Switch>
-        </PeripheralContextProvider>
-      </BrowserRouter>
-    }></Layout>
+        <Switch>
+          <Route path="/gateway/:id" >
+            <PeripheralContextProvider>
+              <GatewayDetail />
+            </PeripheralContextProvider>
+          </Route>
+          <Route path="/">
+            <Gateways />
+          </Route>
+        </Switch>
+      </ BrowserRouter>
+    </Layout>
 
   );
 }
