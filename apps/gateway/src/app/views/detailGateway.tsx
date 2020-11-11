@@ -181,7 +181,7 @@ const GatewayDetail = () => {
                 <ModalForm open={openGatewayModal} handleClose={handleCloseGatewayModal}>
                     <FormGateway onSubmit={updatedGateway} edit={true} gateway={gateway} />
                 </ModalForm>
-                <IconButton aria-label="delete"
+                <IconButton aria-label="delete-gateway"
                     onClick={() => deleteGateway(gateway)
                     }>
                     <DeleteIcon color="secondary" />

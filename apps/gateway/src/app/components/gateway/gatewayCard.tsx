@@ -48,7 +48,7 @@ export function GatewayCard(params: { gateway: IGateway }) {
 
                 </CardContent>
                 <CardActions>
-                    <Link className={classes.link} to={`/gateway/${params.gateway._id}`}>
+                    <Link aria-label={params.gateway.serial} className={classes.link} to={`/gateway/${params.gateway._id}`}>
                         <Button size="small">Details</Button>
                     </Link>
                 </CardActions>
