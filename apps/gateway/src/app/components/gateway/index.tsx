@@ -1,1 +1,1 @@
-export * from "./gateway-card";
+export * from "./gatewayCard";

@@ -53,7 +53,7 @@ export const Gateways = () => {
 
 
     return (
-        <div>
+       <div>
             <Box display="flex" flexWrap={"wrap"} >
                 <AddCard onClick={handleOpen} />
                 {gateways.map(gateway =>
