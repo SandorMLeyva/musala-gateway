@@ -11,6 +11,7 @@ import { PeripheralContext } from '../context';
 import { useParams } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import { ModalForm } from '../components/modal-form/modalForm';
 
 
 
@@ -163,29 +164,10 @@ const GatewayDetail = () => {
                 {peripherals.length < 10 ? <AddCard small={true} onClick={handleOpen} /> : null}
                 {peripherals.map(peripheral => <PeripheralCard onDelete={deletePeripheral} onEdit={editPeripheral} peripheral={peripheral} key={peripheral._id} />)}
             </Box>
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={open}
-                onClose={handleClose}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={open}>
-                    <Paper className={classes.paper}>
-                        <div className={classes.textRigth}>
-                            <IconButton onClick={handleClose} aria-label="delete" >
-                                <CloseIcon />
-                            </IconButton>
-                        </div>
-                        <FormPeripheral {...edit} gateway={id} onSubmit={edit.edit ? updatedPeripheral : newPeripheral} />
-                    </Paper>
-                </Fade>
-            </Modal>
+            <ModalForm open={open} handleClose={handleClose} >
+                <FormPeripheral {...edit} gateway={id} onSubmit={edit.edit ? updatedPeripheral : newPeripheral} />
+            </ModalForm>
+          
         </Box>
     </div>);
 };
