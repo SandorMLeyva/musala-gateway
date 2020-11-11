@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Formik, Form, Field } from 'formik';
+import React from 'react';
+import { Formik, Form, Field, FormikHelpers } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { Button, LinearProgress, Typography, createStyles, makeStyles, Theme } from '@material-ui/core';
 import { IGateway, ipV4Format } from '@gateway/models';
@@ -33,7 +33,7 @@ export default function FormGateway(props: FormGatewayProps) {
                         serial: props.edit ? props.gateway.serial : "",
                         name: props.edit ? props.gateway.name : "",
                         ipv4Address: props.edit ? props.gateway.ipv4Address : "",
-                    }}
+                    } as IGateway}
                     validate={values => {
                         const errors: Partial<IGateway> = {};
                         if (!values.ipv4Address) {
@@ -46,9 +46,10 @@ export default function FormGateway(props: FormGatewayProps) {
                         if (!values.serial) {
                             errors.serial = 'Required';
                         }
+                       
                         return errors;
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, setFieldError }: FormikHelpers<IGateway>) => {
                         if (props.edit) {
                             fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlUpdate.replace(":id", props.gateway._id)}`,
                                 {
@@ -58,9 +59,13 @@ export default function FormGateway(props: FormGatewayProps) {
                                         'Content-Type': 'application/json'
                                     }
                                 })
-                                .then(r => r.json())
-                                .then(r => props.onSubmit(r as IGateway))
-                                .then(r => setSubmitting(false))
+                                .then(r => {
+                                    if (r.ok) {
+                                        r.json().then(e => props.onSubmit(e as IGateway));
+                                    }                                  
+
+                                    setSubmitting(false)
+                                })
                                 .catch(e => console.log(e));
 
                         } else {
@@ -73,9 +78,15 @@ export default function FormGateway(props: FormGatewayProps) {
                                         'Content-Type': 'application/json'
                                     }
                                 })
-                                .then(r => r.json())
-                                .then(r => props.onSubmit(r as IGateway))
-                                .then(r => setSubmitting(false))
+                                .then(async r => {
+                                    if (r.ok) {
+                                        r.json().then(e => props.onSubmit(e as IGateway));
+                                    }
+                                    else {
+                                        setFieldError("serial","This serial belongs to another gateway");
+                                    }
+                                    setSubmitting(false);
+                                })
                                 .catch(e => console.log(e));
                         }
 
@@ -131,6 +142,7 @@ export default function FormGateway(props: FormGatewayProps) {
                                 color="primary"
                                 disabled={isSubmitting}
                                 onClick={submitForm}
+                                id="btn-submit-gateway-form"
                             >Save</Button>
                         </Form>
                     )}
