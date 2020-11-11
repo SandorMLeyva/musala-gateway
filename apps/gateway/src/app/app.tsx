@@ -13,8 +13,8 @@ import { PeripheralContextProvider } from './context';
 function App() {
   return (
 
-    <Layout>
-      <BrowserRouter>
+    <BrowserRouter>
+      <Layout>
         <Switch>
           <Route path="/gateway/:id" >
             <PeripheralContextProvider>
@@ -25,8 +25,8 @@ function App() {
             <Gateways />
           </Route>
         </Switch>
-      </ BrowserRouter>
-    </Layout>
+      </Layout>
+    </ BrowserRouter>
 
   );
 }
