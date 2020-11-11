@@ -7,8 +7,9 @@ import * as ApiInterfaces from '@gateway/api-interfaces';
 
 
 interface FormGatewayProps {
-    onSubmit?(item: IGateway): void
-    onCancel?(): void
+    onSubmit?(item: IGateway): void;
+    gateway?: IGateway;
+    edit?: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -24,14 +25,14 @@ export default function FormGateway(props: FormGatewayProps) {
     return (
         <div className={classes.root}>
             <Typography variant="h5" component="h2">
-                Add new Gateway
+                {props.edit ? "Edit" : "Add new"} Gateway
                     </Typography>
             <div>
                 <Formik
                     initialValues={{
-                        serial: "",
-                        name: "",
-                        ipv4Address: "",
+                        serial: props.edit ? props.gateway.serial : "",
+                        name: props.edit ? props.gateway.name : "",
+                        ipv4Address: props.edit ? props.gateway.ipv4Address : "",
                     }}
                     validate={values => {
                         const errors: Partial<IGateway> = {};
@@ -48,19 +49,35 @@ export default function FormGateway(props: FormGatewayProps) {
                         return errors;
                     }}
                     onSubmit={(values, { setSubmitting }) => {
+                        if (props.edit) {
+                            fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlUpdate.replace(":id", props.gateway._id)}`,
+                                {
+                                    method: 'PUT',
+                                    body: JSON.stringify(values),
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
+                                .then(r => r.json())
+                                .then(r => props.onSubmit(r as IGateway))
+                                .then(r => setSubmitting(false))
+                                .catch(e => console.log(e));
 
-                        fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlCreate}`,
-                            {
-                                method: 'POST',
-                                body: JSON.stringify(values),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                            .then(r => r.json())
-                            .then(r=> props.onSubmit(r as IGateway))
-                            .then(r => setSubmitting(false))
-                            .catch(e => console.log(e));
+                        } else {
+
+                            fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlCreate}`,
+                                {
+                                    method: 'POST',
+                                    body: JSON.stringify(values),
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
+                                .then(r => r.json())
+                                .then(r => props.onSubmit(r as IGateway))
+                                .then(r => setSubmitting(false))
+                                .catch(e => console.log(e));
+                        }
 
                     }}
                 >

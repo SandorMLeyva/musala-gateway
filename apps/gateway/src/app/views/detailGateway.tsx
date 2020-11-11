@@ -9,6 +9,9 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CloseIcon from '@material-ui/icons/Close';
 import { PeripheralContext } from '../context';
 import { useParams } from 'react-router-dom';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+
 
 
 const useStyles = makeStyles({
@@ -54,7 +57,7 @@ const GatewayDetail = () => {
             .then(r => r.json())
             .then(setGateway)
             .catch(e => console.log(e))
-    }, []);
+    }, [id]);
 
     const { peripherals, setPeripherals } = useContext(PeripheralContext);
 
@@ -63,7 +66,7 @@ const GatewayDetail = () => {
             .then(r => r.json())
             .then(setPeripherals)
             .catch(e => console.log(e))
-    }, []);
+    }, [id]);
 
     const [open, setOpen] = useState(false);
     const [edit, setEdit] = useState<ISetUpdate>({
@@ -76,14 +79,14 @@ const GatewayDetail = () => {
     };
 
     const handleClose = () => {
-        setOpen(false);
-    };
-
-    const newPeripheral = (peripheral: IPeripheral) => {
         setEdit({
             edit: false,
             peripheral: null
         })
+        setOpen(false);
+    };
+
+    const newPeripheral = (peripheral: IPeripheral) => {
         setPeripherals([...peripherals, peripheral]);
         handleClose();
     };
@@ -124,16 +127,30 @@ const GatewayDetail = () => {
     };
 
     return (<div>
-        <Box p={1} m={2}>
-            <Typography variant="h5" component="h3">
-                {gateway.name}
-            </Typography>
-            <Typography className={classes.title} color="textSecondary" gutterBottom>
-                {gateway.ipv4Address}
-            </Typography>
-            <Typography className={classes.pos} color="textSecondary">
-                {gateway.serial}
-            </Typography>
+        <Box p={1} m={2} display="flex">
+            <Box m={5}>
+                <Typography variant="h5" component="h3">
+                    {gateway.name}
+                </Typography>
+                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                    {gateway.ipv4Address}
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                    {gateway.serial}
+                </Typography>
+            </Box>
+            <Box display="flex" m={5} p={3}>
+                <IconButton aria-label="edit"
+                    onClick={() => console.log("edit")}>
+                    <EditIcon />
+                </IconButton>
+                <IconButton aria-label="delete"
+                    onClick={() => console.log("delete")
+                    }>
+                    <DeleteIcon color="secondary" />
+                </IconButton>
+            </Box>
+
         </Box>
         <Box p={5}>
             <Box ml={1}>

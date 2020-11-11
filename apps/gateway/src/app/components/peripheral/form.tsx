@@ -9,7 +9,6 @@ import * as ApiInterfaces from '@gateway/api-interfaces';
 interface FormPeripheralProps {
     onSubmit?(item: IPeripheral): void;
     gateway?: string;
-    onCancel?(): void;
     peripheral?: IPeripheral;
     edit?: boolean;
 }
@@ -27,14 +26,14 @@ export default function FormPeripheral(props: FormPeripheralProps) {
     return (
         <div className={classes.root}>
             <Typography variant="h5" component="h2">
-                Add new Peripheral
+                {props.edit ? "Edit" : "Add new"} Peripheral
                     </Typography>
             <div>
                 <Formik
-                    initialValues={ {
-                        uid:props.edit ? props.peripheral.uid: 0,
-                        vendor:props.edit ? props.peripheral.vendor: "",
-                        status: props.edit ? props.peripheral.status:true,
+                    initialValues={{
+                        uid: props.edit ? props.peripheral.uid : 0,
+                        vendor: props.edit ? props.peripheral.vendor : "",
+                        status: props.edit ? props.peripheral.status : true,
                     }}
                     validate={values => {
                         const errors: Partial<IPeripheral> = {};
@@ -46,8 +45,8 @@ export default function FormPeripheral(props: FormPeripheralProps) {
                     onSubmit={(values, { setSubmitting }) => {
                         console.log(values);
                         if (props.edit) {
-                            
-                            fetch(`http://localhost:3333/api/v1${ApiInterfaces.PeripheralApiUrlUpdate.replace(":id",props.peripheral._id)}`,
+
+                            fetch(`http://localhost:3333/api/v1${ApiInterfaces.PeripheralApiUrlUpdate.replace(":id", props.peripheral._id)}`,
                                 {
                                     method: 'PUT',
                                     body: JSON.stringify({

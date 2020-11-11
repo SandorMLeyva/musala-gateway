@@ -79,7 +79,7 @@ export function PeripheralCard(props: IPeripheralCardProps) {
                             <IconButton aria-label="delete" onClick={() =>
                                 props.onDelete(props.peripheral)
                             }>
-                                <DeleteIcon />
+                                <DeleteIcon color="secondary" />
                             </IconButton> : null
                         }
                     </Box>
