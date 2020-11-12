@@ -3,16 +3,16 @@ import { GatewayCard } from '../components/gateway'
 import { Box } from '@material-ui/core'
 import AddCard from '../components/add-button'
 import { IGateway } from "@gateway/models"
-import * as ApiInterfaces from '@gateway/api-interfaces';
 import { ModalForm } from '../components/modal-form/modalForm'
 import FormGateway from '../components/gateway/form'
+import { listGateway } from '../api'
 
 
 export const Gateways = () => {
     const [gateways, setGateways] = useState<IGateway[]>([]);
 
     useEffect(() => {
-        fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlList}`)
+        listGateway()
             .then(r => r.json())
             .then(setGateways)
             .catch(e => console.log(e))

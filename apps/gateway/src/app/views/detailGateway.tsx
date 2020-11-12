@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Typography, makeStyles, Box, IconButton } from '@material-ui/core';
 import { IGateway, IPeripheral } from '@gateway/models';
-import * as ApiInterfaces from '@gateway/api-interfaces';
 import { PeripheralCard } from '../components/peripheral/peripheralCard';
 import AddCard from '../components/add-button';
 import FormPeripheral from '../components/peripheral/form';
@@ -11,6 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { ModalForm } from '../components/modal-form/modalForm';
 import FormGateway from '../components/gateway/form';
+import { detailGateway, peripheralsGateway, removePeripheral, removeGateway } from '../api';
 
 const useStyles = makeStyles({
 
@@ -53,7 +53,7 @@ const GatewayDetail = () => {
     // Load resources
     const [gateway, setGateway] = useState<IGateway>({} as IGateway);
     useEffect(() => {
-        fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlDetail.replace(":id", id)}`)
+        detailGateway(id)
             .then(r => r.json())
             .then(setGateway)
             .catch(e => console.log(e))
@@ -62,44 +62,38 @@ const GatewayDetail = () => {
     const { peripherals, setPeripherals } = useContext(PeripheralContext);
 
     useEffect(() => {
-        fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlPeripheral.replace(":id", id)}`)
+        peripheralsGateway(id)
             .then(r => r.json())
             .then(setPeripherals)
             .catch(e => console.log(e))
     }, [id]);
 
-     // Edit and delete gateway
-     const [openGatewayModal, setOpenGatewayModal] = useState(false);
+    // Edit and delete gateway
+    const [openGatewayModal, setOpenGatewayModal] = useState(false);
 
 
-     const handleOpenGatewayModal = () => {
-         setOpenGatewayModal(true);
-     };
- 
-     const handleCloseGatewayModal = () => {
-         setOpenGatewayModal(false);
-     };
- 
- 
-     const updatedGateway = (item: IGateway) => {
-         setGateway(item);
-         handleCloseGatewayModal();
-     };
- 
-     const deleteGateway = (item: IGateway) => (
-         fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlRemove.replace(":id", item._id)}`,
-             {
-                 method: 'DELETE',
-                 headers: {
-                     'Content-Type': 'application/json'
-                 }
-             })
-             .then(r => {
-                 history.push("/")
-             })
-             .catch(e => console.log(e))
-     );
-     // --- End Edit and delete gateway
+    const handleOpenGatewayModal = () => {
+        setOpenGatewayModal(true);
+    };
+
+    const handleCloseGatewayModal = () => {
+        setOpenGatewayModal(false);
+    };
+
+
+    const updatedGateway = (item: IGateway) => {
+        setGateway(item);
+        handleCloseGatewayModal();
+    };
+
+    const deleteGateway = (item: IGateway) => (
+        removeGateway(item._id)
+            .then(r => {
+                history.push("/")
+            })
+            .catch(e => console.log(e))
+    );
+    // --- End Edit and delete gateway
 
     // Setup CRUD peripheral
     const [open, setOpen] = useState(false);
@@ -137,13 +131,7 @@ const GatewayDetail = () => {
     };
 
     const deletePeripheral = (item: IPeripheral) => (
-        fetch(`http://localhost:3333/api/v1${ApiInterfaces.PeripheralApiUrlRemove.replace(":id", item._id)}`,
-            {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+        removePeripheral(item._id)
             .then(r => r.json())
             .then(r => {
                 const clean = peripherals.filter(item => item._id !== r._id);

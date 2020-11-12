@@ -24,3 +24,13 @@ export const createPeripheral = (values: IPeripheral) => (
             }
         })
 );
+
+export const removePeripheral = (id: string) => (
+    fetch(`${API}${ApiInterfaces.PeripheralApiUrlRemove.replace(":id", id)}`,
+    {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+);

@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import GatewayDetail from './views/detailGateway';
 import { PeripheralContextProvider } from './context';
+import NotFound from './components/not-found';
 
 
 function App() {
@@ -21,8 +22,11 @@ function App() {
               <GatewayDetail />
             </PeripheralContextProvider>
           </Route>
-          <Route path="/">
+          <Route exact path="/">
             <Gateways />
+          </Route>
+          <Route path="*">
+            <NotFound />
           </Route>
         </Switch>
       </Layout>

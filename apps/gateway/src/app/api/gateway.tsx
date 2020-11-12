@@ -23,3 +23,27 @@ export const createGateway = (values: IGateway) => (
         }
     })
 );
+
+
+export const removeGateway = (id: string) => (
+    fetch(`${API}${ApiInterfaces.GatewayApiUrlRemove.replace(":id", id)}`,
+    {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+);
+
+export const detailGateway = (id: string) => (
+    fetch(`${API}${ApiInterfaces.GatewayApiUrlDetail.replace(":id", id)}`)
+);
+
+export const peripheralsGateway = (id: string) => (
+    fetch(`${API}${ApiInterfaces.GatewayApiUrlPeripheral.replace(":id", id)}`)
+);
+
+
+export const listGateway = () => (
+    fetch(`${API}${ApiInterfaces.GatewayApiUrlList}`)
+);
