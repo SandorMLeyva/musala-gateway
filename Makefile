@@ -14,7 +14,7 @@ test_e2e:
 server: db
 	yarn nx serve api
 
-client: 
+client:
 	yarn nx build gateway
 	yarn serve -s dist/apps/gateway/ -l 8080
 
