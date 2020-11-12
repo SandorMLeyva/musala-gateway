@@ -1,3 +1,25 @@
+# Musala-Gateway
+
+This is a test project developed using javascript technologies.
+
+###  Structured with NX
+
+Nx is the preeminent toolkit for Monorepo development, which helps  you to build software smarter and faster. With Nx you can build  full-stack applications with your preferred framework, integrate with  modern tools you’re probably already using, and reinforce best practices for your entire development team or enterprise. Use Nx to build  software at scale, the better way.
+
+- Out of the box integration with Cypress, Jest, Typescript, Prettier + more
+
+  *[More info about NX](https://nx.dev/latest/react/getting-started/why-nx)*
+
+The code of this project is written in Typescript
+
+- Client:  **ReactJS** 
+
+- Server: **ExpressJS**
+
+- Test: **Jest**, **Cypress**
+
+  
+
 ## SET UP
 
 ```bash
@@ -30,5 +52,9 @@ make client
 
 
 
+## Requirements
 
+1. [NodeJS](https://nodejs.org/es/)
+2. [docker](https://www.docker.com/)
+3. [docker-compose](https://www.docker.com/)
 
