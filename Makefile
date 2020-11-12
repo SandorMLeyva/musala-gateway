@@ -1,22 +1,22 @@
 
 init:
-	yarn
+	npm i
 
 db:
 	docker-compose up -d mongo
 
-test_api: db &
-	yarn nx test api
+test_api: db
+	npm run nx test api
 
 test_e2e: 
-	yarn nx e2e gateway-e2e
+	npm run nx e2e gateway-e2e
 
 server: db
-	yarn nx serve api
+	npm run nx serve api
 
 client:
-	yarn nx build gateway
-	yarn serve -s dist/apps/gateway/ -l 8080
+	npm run nx build gateway
+	npm run serve -s dist/apps/gateway/ -l 8080
 
 
 
