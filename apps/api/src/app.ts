@@ -1,7 +1,7 @@
 import * as express from 'express';
 import routes from './app/routes';
 import { json } from 'body-parser';
-import cors from 'cors';
+import * as cors from 'cors';
 
 // Setup app
 

@@ -50,10 +50,10 @@ export async function update(req: Request, res: Response) {
 
 // delete delete
 export async function remove(req: Request, res: Response) {
-  await PeripheralModel.findByIdAndRemove(req.params.id, function (err, item) {
+  PeripheralModel.findByIdAndRemove(req.params.id, function (err, item) {
     if (err) return res.status(500).send({ error: err.message });
-    // if (item === null)
-    //   return res.status(404).send({ error: 'Resource not found' });
+    if (item === null)
+      return res.status(404).send({ error: 'Resource not found' });
     return res.json(item);
   });
 }

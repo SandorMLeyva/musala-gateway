@@ -1,5 +1,4 @@
-import * as mongoose from 'mongoose';
-import { Document, Schema } from 'mongoose';
+import { Document, Schema, model } from 'mongoose';
 
 
 export interface IPeripheral {
@@ -31,7 +30,7 @@ export const PeripheralSchema: Schema = new Schema({
   },
 });
 
-export const PeripheralModel = mongoose.model<IPeripheral & Document>(
+export const PeripheralModel = model<IPeripheral & Document>(
   'PeripheralModel',
   PeripheralSchema
 );

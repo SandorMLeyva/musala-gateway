@@ -31,20 +31,26 @@ export async function detail(req: Request, res: Response) {
 // put update
 export async function update(req: Request, res: Response) {
   const body = req.body as IGateway;
-  GatewayModel.findOneAndUpdate({ _id: req.params.id }, body,{new: true}, (err, item) => {
-    if (err) res.status(500).send({ error: err.message });
-    if (item === null)
-      return res.status(404).send({ error: 'Resource not found' });
-    return res.json(item);
-  });
+  GatewayModel.findOneAndUpdate(
+    { _id: req.params.id },
+    body,
+    { new: true },
+    (err, item) => {
+      if (err) res.status(500).send({ error: err.message });
+      if (item === null)
+        return res.status(404).send({ error: 'Resource not found' });
+      return res.json(item);
+    }
+  );
 }
 
 // delete delete
 export async function remove(req: Request, res: Response) {
-  await GatewayModel.findByIdAndRemove(req.params.id,(err, item) => {
+  GatewayModel.findByIdAndDelete(req.params.id, async (err, item) => {
     if (err) return res.status(500).send({ error: err.message });
     if (item === null)
       return res.status(404).send({ error: 'Resource not found' });
+    await PeripheralModel.deleteMany({ gateway: item._id }).exec();
     return res.status(200).json(item);
   });
 }

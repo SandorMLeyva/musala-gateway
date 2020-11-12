@@ -1,7 +1,6 @@
 import app from '../app';
 import * as mongoose from 'mongoose';
 import * as request from 'supertest';
-import { PeripheralStatus } from '@gateway/models';
 
 let testServer;
 beforeAll(() => {
@@ -268,7 +267,7 @@ describe('Test gateway and peripheral relation', function () {
           _id: `1fa9610a0879c10330c2217${i}`,
           uid: 21,
           vendor: `Musala-${i}`,
-          status: PeripheralStatus.online,
+          status: true,
           gateway: '1fa9310e0871a10760b23725',
         })
         .expect((result) => {
@@ -288,7 +287,7 @@ describe('Test gateway and peripheral relation', function () {
         _id: `1fa9610e0879c10330c22178`,
         uid: 21,
         vendor: `Musala-10`,
-        status: PeripheralStatus.online,
+        status: true,
         gateway: '1fa9310e0871a10760b23725',
       })
       .expect(400, done);
