@@ -3,7 +3,8 @@ import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { Button, LinearProgress, Typography, Switch, FormControlLabel, makeStyles, Theme, createStyles } from '@material-ui/core';
 import { IPeripheral } from '@gateway/models';
-import * as ApiInterfaces from '@gateway/api-interfaces';
+import { updatePeripheral, createPeripheral } from '../../api';
+
 
 
 interface FormPeripheralProps {
@@ -34,7 +35,7 @@ export default function FormPeripheral(props: FormPeripheralProps) {
                         uid: props.edit ? props.peripheral.uid : 0,
                         vendor: props.edit ? props.peripheral.vendor : "",
                         status: props.edit ? props.peripheral.status : true,
-                    }}
+                    } as IPeripheral}
                     validate={values => {
                         const errors: Partial<IPeripheral> = {};
                         if (!values.vendor) {
@@ -43,40 +44,20 @@ export default function FormPeripheral(props: FormPeripheralProps) {
                         return errors;
                     }}
                     onSubmit={(values, { setSubmitting }) => {
-                        console.log(values);
                         if (props.edit) {
-
-                            fetch(`http://localhost:3333/api/v1${ApiInterfaces.PeripheralApiUrlUpdate.replace(":id", props.peripheral._id)}`,
-                                {
-                                    method: 'PUT',
-                                    body: JSON.stringify({
-                                        uid: values.uid,
-                                        vendor: values.vendor,
-                                        status: values.status
-                                    }),
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    }
-                                })
+                            updatePeripheral(props.peripheral._id, values)
                                 .then(r => r.json())
                                 .then(r => props.onSubmit(r as IPeripheral))
                                 .then(r => setSubmitting(false))
                                 .catch(e => console.log(e));
                         } else {
 
-                            fetch(`http://localhost:3333/api/v1${ApiInterfaces.PeripheralApiUrlCreate}`,
-                                {
-                                    method: 'POST',
-                                    body: JSON.stringify({
-                                        uid: values.uid,
-                                        vendor: values.vendor,
-                                        status: values.status,
-                                        gateway: props.gateway
-                                    }),
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    }
-                                })
+                            createPeripheral({
+                                uid: values.uid,
+                                vendor: values.vendor,
+                                status: values.status,
+                                gateway: props.gateway
+                            } as IPeripheral)
                                 .then(r => r.json())
                                 .then(r => props.onSubmit(r as IPeripheral))
                                 .then(r => setSubmitting(false))

@@ -32,7 +32,7 @@ describe('Gateway flow', () => {
   });
 
   it('should show gateway detail', () => {
-    getPage().get('a:last').click();
+    getPage().get("[aria-label='TEST3']").click();
   });
 
   it('should show edit gateway', () => {

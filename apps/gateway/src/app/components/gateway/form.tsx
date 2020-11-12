@@ -3,7 +3,7 @@ import { Formik, Form, Field, FormikHelpers } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { Button, LinearProgress, Typography, createStyles, makeStyles, Theme } from '@material-ui/core';
 import { IGateway, ipV4Format } from '@gateway/models';
-import * as ApiInterfaces from '@gateway/api-interfaces';
+import { updateGateway, createGateway } from '../../api';
 
 
 interface FormGatewayProps {
@@ -22,6 +22,34 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function FormGateway(props: FormGatewayProps) {
     const classes = useStyles();
+
+    const onSubmit = (values, { setSubmitting, setFieldError }: FormikHelpers<IGateway>) => {
+        if (props.edit) {
+            updateGateway(props.gateway._id, values)
+                .then(r => {
+                    if (r.ok) {
+                        r.json().then(e => props.onSubmit(e as IGateway));
+                    }
+                    setSubmitting(false)
+                })
+                .catch(e => console.log(e));
+        }
+        else {
+            createGateway(values)
+                .then(async r => {
+                    if (r.ok) {
+                        r.json().then(e => props.onSubmit(e as IGateway));
+                    }
+                    else {
+                        setFieldError("serial", "This serial belongs to another gateway");
+                    }
+                    setSubmitting(false);
+                })
+                .catch(e => console.log(e));
+        }
+
+    };
+
     return (
         <div className={classes.root}>
             <Typography variant="h5" component="h2">
@@ -46,51 +74,10 @@ export default function FormGateway(props: FormGatewayProps) {
                         if (!values.serial) {
                             errors.serial = 'Required';
                         }
-                       
+
                         return errors;
                     }}
-                    onSubmit={(values, { setSubmitting, setFieldError }: FormikHelpers<IGateway>) => {
-                        if (props.edit) {
-                            fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlUpdate.replace(":id", props.gateway._id)}`,
-                                {
-                                    method: 'PUT',
-                                    body: JSON.stringify(values),
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    }
-                                })
-                                .then(r => {
-                                    if (r.ok) {
-                                        r.json().then(e => props.onSubmit(e as IGateway));
-                                    }                                  
-
-                                    setSubmitting(false)
-                                })
-                                .catch(e => console.log(e));
-
-                        } else {
-
-                            fetch(`http://localhost:3333/api/v1${ApiInterfaces.GatewayApiUrlCreate}`,
-                                {
-                                    method: 'POST',
-                                    body: JSON.stringify(values),
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    }
-                                })
-                                .then(async r => {
-                                    if (r.ok) {
-                                        r.json().then(e => props.onSubmit(e as IGateway));
-                                    }
-                                    else {
-                                        setFieldError("serial","This serial belongs to another gateway");
-                                    }
-                                    setSubmitting(false);
-                                })
-                                .catch(e => console.log(e));
-                        }
-
-                    }}
+                    onSubmit={onSubmit}
                 >
                     {({ submitForm, isSubmitting }) => (
                         <Form>
